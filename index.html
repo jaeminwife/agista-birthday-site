@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agista's 20th Birthday 🎉</title>
+  <meta name="description" content="Happy 20th Birthday, Agista! A special interactive message from Zia." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink:#ff9a9e; --peach:#fad0c4; --blue:#a1c4fd; --sky:#c2e9fb;
+      --accent:#ff4e50; --accent-2:#fc913a; --glass:rgba(255,255,255,.14);
+    }
+    * { box-sizing: border-box }
+    body {
+      margin:0; font-family:'Poppins',sans-serif; color:#fff;
+      background: linear-gradient(-45deg, var(--pink), var(--peach), var(--blue), var(--sky));
+      background-size: 400% 400%;
+      animation: gradient 18s ease infinite;
+      min-height:100vh; overflow-x:hidden;
+    }
+    @keyframes gradient { 0%{background-position:0 50%} 50%{background-position:100% 50%} 100%{background-position:0 50%} }
+    /* bokeh particles */
+    canvas#bokeh { position:fixed; inset:0; z-index:-1; }
+    header.hero {
+      min-height: 100vh; display:flex; align-items:center; justify-content:center; text-align:center; padding: 80px 20px 40px;
+    }
+    .hero-inner { max-width: 900px; }
+    .badge-20 {
+      display:inline-flex; align-items:center; gap:8px;
+      background: var(--glass); border:1px solid rgba(255,255,255,.25); backdrop-filter: blur(10px);
+      padding:8px 14px; border-radius: 999px; box-shadow: 0 8px 24px rgba(0,0,0,.2);
+      font-weight:600;
+    }
+    .title {
+      font-size: clamp(2.2rem, 6vw, 4rem); margin:18px 0 6px;
+      text-shadow: 0 0 14px rgba(255,255,255,.75), 0 0 30px rgba(255,200,200,.5);
+      letter-spacing:.5px;
+    }
+    .subtitle { opacity:.9; font-size: clamp(1.05rem, 2.8vw, 1.25rem); }
+    .cta { margin-top:28px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+    .btn {
+      background:var(--accent); color:#fff; border:none; padding:12px 22px; border-radius:999px; cursor:pointer;
+      font-weight:600; box-shadow:0 10px 22px rgba(0,0,0,.25); transition:.25s transform,.25s background;
+    }
+    .btn:hover { transform: translateY(-2px); background:var(--accent-2); }
+
+    /* slideshow */
+    section.gallery { padding: 40px 16px 90px; position:relative; }
+    .frame {
+      max-width: 920px; margin: 0 auto; border-radius: 22px; overflow: hidden; position:relative;
+      background: var(--glass); border:1px solid rgba(255,255,255,.25); backdrop-filter: blur(12px);
+      box-shadow:0 20px 50px rgba(0,0,0,.25);
+    }
+    .slides { position:relative; width:100%; height: clamp(320px, 55vw, 560px);}
+    .slides img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition: opacity .8s ease; }
+    .slides img.active { opacity:1; }
+    .controls { position:absolute; inset:0; display:flex; align-items:center; justify-content:space-between; padding: 0 12px; }
+    .arrow {
+      background: rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.3); width:42px; height:42px; border-radius:50%;
+      display:grid; place-items:center; cursor:pointer; user-select:none; font-size:22px; transition:.2s transform;
+    }
+    .arrow:hover { transform: scale(1.05); }
+    .dots { position:absolute; bottom:10px; left:0; right:0; display:flex; gap:8px; justify-content:center; padding:10px 0; }
+    .dot {
+      width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,.6); cursor:pointer; border:1px solid rgba(255,255,255,.7);
+    }
+    .dot.active { background:#fff; }
+
+    /* modal letter */
+    .modal { position: fixed; inset:0; display:none; place-items:center; background: rgba(0,0,0,.6); padding:20px; z-index:5; }
+    .card { width:min(720px, 92vw); max-height:86vh; overflow:auto; border-radius:20px; background:var(--glass); border:1px solid rgba(255,255,255,.25); backdrop-filter: blur(18px); padding:24px; box-shadow:0 20px 60px rgba(0,0,0,.35); }
+    .card h3 { margin:0 0 6px; }
+    .card .meta { opacity:.85; margin-bottom:14px; }
+    .card .content { white-space: pre-line; line-height:1.7; }
+    .close { position:sticky; top:0; margin-left:auto; display:inline-block; background: rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.3); color:#fff; padding:8px 14px; border-radius:999px; cursor:pointer; float:right; }
+
+    footer { text-align:center; padding: 24px; opacity:.85 }
+    .small { font-size:.9rem }
+
+    /* balloons */
+    .balloon {
+      position: fixed; bottom:-140px; width:60px; height:80px; border-radius:50%; animation: floatUp 7s ease-in forwards;
+      box-shadow: inset -8px -16px 32px rgba(0,0,0,.15);
+    }
+    .string { position:fixed; bottom:-140px; width:2px; height:90px; background:rgba(255,255,255,.8); transform: translateX(29px); animation: floatUp 7s ease-in forwards; }
+    @keyframes floatUp { from{transform: translateY(0)} to{transform: translateY(-125vh)} }
+  </style>
+</head>
+<body>
+  <canvas id="bokeh"></canvas>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="badge-20">🎂 Sweet 20 • 2005 → 2025</div>
+      <h1 class="title" id="typed">Happy 20th Birthday, Agista Nadiya Laura</h1>
+      <p class="subtitle">Semoga tahun ke-20 ini penuh cinta, tawa, dan pencapaian. Dari Zia 💖</p>
+      <div class="cta">
+        <button class="btn" id="openLetter">Buka Surat 💌</button>
+        <button class="btn" id="togglePlay">Play Musik ▶️</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="gallery" aria-label="Memories Slideshow">
+    <div class="frame">
+      <div class="slides" id="slides">
+        <img src="assets/photo-1.jpg" alt="Agista pose salam dua jari" class="active">
+        <img src="assets/photo-2.jpg" alt="Perjalanan bersama teman, siap berangkat">
+        <img src="assets/photo-3.jpg" alt="Selfie bertiga di mobil, ekspresi lucu">
+        <img src="assets/photo-4.jpg" alt="Di kelas dengan seragam putih, senyum">
+        <img src="assets/photo-5.jpg" alt="Foto bareng di taman kampus, cerah">
+      </div>
+      <div class="controls">
+        <div class="arrow" id="prev">❮</div>
+        <div class="arrow" id="next">❯</div>
+      </div>
+      <div class="dots" id="dots"></div>
+    </div>
+  </section>
+
+  <div class="modal" id="modal">
+    <div class="card">
+      <button class="close" id="closeModal">Tutup ✖</button>
+      <h3>Untuk Agista Nadiya Laura 🤍</h3>
+      <div class="meta">Dari sahabatmu, Zia</div>
+      <div class="content">hi gis 🤍
+
+gis… aku baca lagi pesan panjang kamu waktu ulang tahun aku tahun lalu, jujur aku senyum campur nangis. kerasa banget di setiap kata yang kamu tulis tuh ada rasa tulus yang bener-bener dari hati. aku bersyukur banget punya temen yang bisa nyampein isi hatinya sedalam itu, apalagi buat aku yang kadang suka ngerasa “ngga pantes” dapet perhatian sebanyak itu.
+
+ngga nyangka yaa sekarang kita udah semester 5 aja. rasanya baru kemarin kita masih adaptasi sama dunia kampus, eh sekarang udah ketemu kti 😭 waktu cepet banget gis. semoga kita bisa sampe wisuda bareng, liat satu sama lain terus bilang “akhirnya kita berhasil” sambil ketawa puas.
+
+aku juga seneng banget sama hubungan kamu sama ray sekarang. akhirnya kamu dapet hal yang emang seharusnya kamu layak dapetin, gis. aku harap banget ray bener-bener orang yang tepat buat kamu. tapi inget yaa, kalo dia sampe nyakitin kamu… awas aja 😤 ngga bole bikin bestiku sedih-sedih cuma gara-gara cowok lagi. cukup yang kemarin-kemarin aja yang ngga jelas itu.
+
+aku juga mau minta maaf kalo aku pernah bikin kamu ngerasa jauh atau kayak aku ngga butuh kamu. maaf juga kalo selama ini aku belum bisa jadi sahabat yang peka sama kamu. padahal sebenernya kamu tuh salah satu orang penting buat aku. aku cuma ngga selalu bisa ngungkapin aja, tapi bukan berarti aku ngga sayang.
+
+aku inget bagian kamu bilang aku harus hidup lebih lama.. jujurly itu nyentuh banget. masih banyak banget hal lucu, indah, dan receh yang bakalan kita lakuin bareng. kita belum foto aesthetic di semua spot lucu, belum coba semua makanan random yang kita bilang “next time aja”, jadi masih banyak alasan buat kita terus bareng.
+
+soal “cowok itu”, well… kamu bener banget gis. makasi udaa jujur waktu itu, udah ngejaga aku biar ngga nyakitin diri sendiri lebih jauh. kamu bener, aku deserve better. dan sekarang aku juga lebih sadar sama value diri aku.
+
+makasii yaa gis buat semua doa, semua semangat, semua candaan receh yang selalu bikin hati aku anget. aku juga doain kamu semoga semua yang kamu pengenin, sekecil apa pun itu, bisa terwujud dengan cara yang bikin kamu bahagia.
+
+oh iya, happy 20th birthday yaa gis 🥳🎉 selamat datang di kepala dua! semoga umur baru ini bawa banyak hal baik buat kamu, banyak tawa, banyak rezeki, dan banyak momen manis yang bikin kamu semakin bersyukur. semoga semua doa-doa kamu di umur ini dikabulin, dan semoga kamu selalu sehat, bahagia, serta dikelilingi orang-orang yang tulus sayang sama kamu.
+
+pokoknya jangan pernah ragu buat inget kalo aku juga selalu ada buat kamu. bukan cuma pas seneng, tapi juga pas dunia lagi nyebelin-nyebelinnya. dan kalo tahun lalu kamu yang bilang “love you”, sekarang gantian aku bilang love you more, agista nadiya laura 🤍
+
+</div>
+    </div>
+  </div>
+
+  <!-- optional audio: put a file named music.mp3 in the same folder -->
+  <audio id="bgm" loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // Bokeh particles
+    const canvas = document.getElementById('bokeh');
+    const ctx = canvas.getContext('2d');
+    let w, h, particles = [];
+    function resize(){ w = canvas.width = innerWidth; h = canvas.height = innerHeight; }
+    addEventListener('resize', resize); resize();
+    for(let i=0;i<80;i++) particles.push({x:Math.random()*w, y:Math.random()*h, r:Math.random()*3+1, a:Math.random()*0.6+0.2, s:Math.random()*0.6+0.2});
+    function draw(){ ctx.clearRect(0,0,w,h); particles.forEach(p=>{ p.y += p.s; if(p.y>h) p.y=-10; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=`rgba(255,255,255,${p.a})`; ctx.fill(); }); requestAnimationFrame(draw);}
+    draw();
+
+    // Typewriter effect for title
+    (function(){ const el=document.getElementById('typed'); const text=el.textContent; el.textContent=''; let i=0; const t=setInterval(()=>{ el.textContent += text[i++]; if(i>=text.length) clearInterval(t); }, 45); })();
+
+    // Modal letter + balloons + confetti
+    const modal = document.getElementById('modal');
+    document.getElementById('openLetter').onclick = ()=>{ modal.style.display='grid'; releaseBalloons(16); shootConfetti(180); };
+    document.getElementById('closeModal').onclick = ()=> modal.style.display='none';
+    modal.addEventListener('click', e=>{ if(e.target===modal) modal.style.display='none'; });
+
+    function releaseBalloons(n=12) {
+      for(let i=0;i<n;i++) {
+        const b=document.createElement('div'); b.className='balloon';
+        const s=document.createElement('div'); s.className='string';
+        const color=['#ff4e50','#fc913a','#f9d423','#ede574','#e1f5c4','#00d2ff','#928dab'][Math.floor(Math.random()*7)];
+        b.style.left = (Math.random()*100)+'vw'; s.style.left=b.style.left;
+        b.style.background=color; b.style.animationDuration=(Math.random()*3+5)+'s'; s.style.animationDuration=b.style.animationDuration;
+        document.body.appendChild(b); document.body.appendChild(s);
+        setTimeout(()=>{b.remove(); s.remove();}, 8000);
+      }
+    }
+
+    function shootConfetti(count=150) {
+      for(let i=0;i<count;i++) {
+        const c=document.createElement('div');
+        c.style.cssText='position:fixed;top:-10px;width:8px;height:8px;z-index:6;';
+        c.style.left=(Math.random()*100)+'vw';
+        c.style.background=['#ff4e50','#fc913a','#f9d423','#ede574','#e1f5c4','#00d2ff','#928dab'][Math.floor(Math.random()*7)];
+        c.style.transform=`rotate(${Math.random()*360}deg)`;
+        c.animate([{ transform:'translateY(-10px) rotate(0deg)' }, { transform:'translateY(110vh) rotate(720deg)' }], { duration: 3000+Math.random()*2000, easing:'linear' });
+        document.body.appendChild(c);
+        setTimeout(()=>c.remove(), 5200);
+      }
+    }
+
+    // Slideshow
+    const slides = Array.from(document.querySelectorAll('#slides img'));
+    const dotsWrap = document.getElementById('dots');
+    let idx=0, timer=null;
+    function setSlide(i){ slides[idx].classList.remove('active'); dotsWrap.children[idx].classList.remove('active'); idx=(i+slides.length)%slides.length; slides[idx].classList.add('active'); dotsWrap.children[idx].classList.add('active'); }
+    slides.forEach((_,i)=>{ const d=document.createElement('div'); d.className='dot'+(i===0?' active':''); d.onclick=()=>setSlide(i); dotsWrap.appendChild(d); });
+    document.getElementById('prev').onclick=()=>setSlide(idx-1);
+    document.getElementById('next').onclick=()=>setSlide(idx+1);
+    function auto(){
+      timer=setInterval(()=>setSlide(idx+1), 3500);
+    } auto();
+    // Pause on hover/touch
+    const frame=document.querySelector('.frame');
+    frame.addEventListener('mouseenter', ()=>clearInterval(timer));
+    frame.addEventListener('mouseleave', auto);
+    // Swipe
+    let startX=null;
+    frame.addEventListener('touchstart', e=>startX=e.changedTouches[0].screenX);
+    frame.addEventListener('touchend', e=>{ if(startX===null) return; const dx=e.changedTouches[0].screenX-startX; if(Math.abs(dx)>40) setSlide(idx+(dx<0?1:-1)); startX=null; });
+
+    // Music toggle (use your own music.mp3 in same folder)
+    const audio = document.getElementById('bgm');
+    const toggleBtn = document.getElementById('togglePlay');
+    let playing=false;
+    toggleBtn.onclick = async ()=>{
+      try{ if(!playing) { await audio.play(); toggleBtn.textContent='Pause Musik ⏸️'; } else { audio.pause(); toggleBtn.textContent='Play Musik ▶️'; } playing=!playing; }
+      catch(err){ alert('Tambahkan file music.mp3 ke folder ini lalu klik lagi untuk memutar.'); }
+    };
+  </script>
+
+  <footer>
+    <div class="small">© 2025 Zia • Made with ❤️ for Agista's 20th</div>
+  </footer>
+</body>
+</html>
